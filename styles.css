@@ -535,18 +535,18 @@ ul {
 }
 
 .nav-logo-mark {
-  width: 32px;
-  height: 32px;
-  border-radius: var(--r-md);
-  object-fit: cover;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
   display: block;
   flex-shrink: 0;
+  /* a arte tem margem transparente de "glow"; a escala compensa isso */
+  transform: scale(1.2);
 }
 
 .nav-logo-mark-lg {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--r-lg);
+  width: 56px;
+  height: 56px;
 }
 
 .nav-logo-accent {
