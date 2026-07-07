@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<!--
+═══════════════════════════════════════════════════════════════════════════════
+  TEMPLATE LANDING PAGE — CLÍNICAS DE SAÚDE
+  Design system base: Intercom (canvas creme editorial, cards brancos sem sombra,
+  tipografia calma em peso 500, um único acento de cor reservado ao agendamento)
+  Como personalizar: use "Localizar e substituir" (Cmd+F / Ctrl+F) para trocar
+  cada placeholder abaixo pelos dados da clínica.
+═══════════════════════════════════════════════════════════════════════════════
+
+  PLACEHOLDERS DE TEXTO (aparecem em várias seções — substitua TODOS):
+  ─────────────────────────────────────────────────────────────────────────────
+  Clínica Vitalis            → Nome da clínica (header, hero, diferenciais, rodapé, título da página)
+  Cuidado completo para a sua saúde, no mesmo lugar                  → Frase curta de posicionamento (hero e rodapé)
+  (11) 3456-7890                → Telefone com DDD, ex.: (11) 3456-7890 (hero, localização, rodapé)
+  5511987654321                → Número no formato internacional SEM símbolos, ex.: 5511987654321
+                                (usado nos links https://wa.me/5511987654321 — header, hero,
+                                CTA final e botão flutuante)
+  Av. Paulista, 1048 — Bela Vista, São Paulo/SP                → Endereço completo com bairro e cidade (Localização e rodapé)
+  Seg a Sex 8h às 19h · Sáb 8h às 13h   → Ex.: Seg a Sex 8h às 19h · Sáb 8h às 13h (Localização e rodapé)
+  contato@clinicavitalis.com.br                   → E-mail de contato (Localização e rodapé)
+  clinicavitalis               → Usuário sem @, ex.: clinicaexemplo (links do rodapé)
+  4,9             → Nota no Google, ex.: 4,9 (faixa escura de Prova Social)
+  327       → Quantidade de avaliações, ex.: 327 (faixa de Prova Social)
+
+  CORES (definidas UMA vez no bloco <style> logo abaixo — troque só lá):
+  ─────────────────────────────────────────────────────────────────────────────
+  {{COR_PRIMARIA}}            → Cor de acento da clínica. Pela regra do design system,
+                                aparece APENAS nos CTAs de agendamento (WhatsApp) e em
+                                pequenos momentos de ênfase — nunca como fundo de seção.
+                                Padrão atual: #0E7C86 (turquesa saúde)
+  {{COR_SECUNDARIA}}          → Versão escura da cor de acento (hover dos CTAs).
+                                Padrão atual: #0A5D65
+  → Edite as variáveis --cor-acento e --cor-acento-escura em :root no <style>.
+
+  ESPECIALIDADES (Odontologia, Clínico Geral, Fisioterapia, Psicologia, Exames e Nutrição):
+  ─────────────────────────────────────────────────────────────────────────────
+  A seção "Especialidades" (id="especialidades") traz 6 cards de exemplo:
+  Odontologia, Clínico Geral, Fisioterapia, Psicologia, Exames, Nutrição.
+  Duplique/remova cards e troque nome, descrição e ícone conforme a clínica.
+
+  IMAGENS (procure por FOTO_ nos comentários ao longo do arquivo):
+  ─────────────────────────────────────────────────────────────────────────────
+  https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80               → Foto da recepção/fachada (card fotográfico do hero)
+  {{FOTO_PROFISSIONAL_1..4}}  → Fotos do corpo clínico (seção Equipe)
+  https://www.google.com/maps?q=Av.+Paulista,+1048,+S%C3%A3o+Paulo&output=embed          → URL do embed do Google Maps (seção Localização).
+                                Como obter: Google Maps → Compartilhar → Incorporar
+                                um mapa → copie APENAS a URL do atributo src do iframe.
+
+  EQUIPE (seção id="equipe"):
+  ─────────────────────────────────────────────────────────────────────────────
+  {{NOME_PROFISSIONAL_1..4}}, {{ESPECIALIDADE_PROFISSIONAL_1..4}},
+  {{REGISTRO_PROFISSIONAL_1..4}} (CRO/CRM/CREFITO/CRP)
+
+  DEPOIMENTOS (seção id="depoimentos"):
+  ─────────────────────────────────────────────────────────────────────────────
+  {{DEPOIMENTO_1..3}}, {{NOME_PACIENTE_1..3}} — copie de avaliações reais do Google.
+
+═══════════════════════════════════════════════════════════════════════════════
+-->
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clínica Vitalis — Agende sua consulta</title>
+  <meta name="description" content="Clínica Vitalis — Cuidado completo para a sua saúde, no mesmo lugar. Agende sua consulta pelo WhatsApp." />
+
+  <!-- Google Fonts — Inter (substituto recomendado do Saans no design system) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
+          colors: {
+            /* Tokens do design system Intercom */
+            canvas: '#f5f1ec',          /* creme — superfície âncora, nunca branco puro */
+            'surface-1': '#ffffff',     /* cards flutuantes */
+            'surface-2': '#ebe7e1',     /* creme mais escuro — faixas alternadas */
+            ink: '#111111',             /* charcoal — primário do sistema */
+            'ink-muted': '#626260',
+            'ink-subtle': '#7b7b78',
+            hairline: '#d3cec6',
+            'hairline-soft': '#ebe7e1',
+            'inverse-canvas': '#000000',/* faixa preta de depoimento/prova social */
+            /* Acento da clínica — só nos CTAs de agendamento */
+            acento: 'var(--cor-acento)',
+            'acento-escuro': 'var(--cor-acento-escura)',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ═══════════ CORES DA CLÍNICA — troque apenas aqui ═══════════
+       {{COR_PRIMARIA}}   → --cor-acento (CTAs de agendamento)
+       {{COR_SECUNDARIA}} → --cor-acento-escura (hover dos CTAs) */
+    :root {
+      --cor-acento: #0E7C86;        /* {{COR_PRIMARIA}} */
+      --cor-acento-escura: #0A5D65; /* {{COR_SECUNDARIA}} */
+    }
+
+    /* Tracking negativo proporcional nos displays (princípio do design system) */
+    .display-xl { letter-spacing: -0.03em; line-height: 1.05; }
+    .display-md { letter-spacing: -0.02em; line-height: 1.15; }
+
+    /* Card fotográfico do hero: troque a URL pela foto real (https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80).
+       O tom creme-escuro é o fallback enquanto a foto não é definida. */
+    .foto-hero {
+      background-image: url('https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80');
+      background-color: #d9d2c7;
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* Animação sutil do botão flutuante de WhatsApp */
+    @keyframes pulso {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45); }
+      50% { box-shadow: 0 0 0 14px rgba(37, 211, 102, 0); }
+    }
+    .whats-flutuante { animation: pulso 2.5s ease-in-out infinite; }
+  </style>
+</head>
+
+<body class="font-sans text-ink antialiased bg-canvas">
+
+  <!-- ═══════════════════ 1. CABEÇALHO FIXO ═══════════════════
+       Padrão do design system: barra creme (mesma cor do canvas), sem sombra,
+       hairline inferior. O CTA de agendamento leva a cor de acento. -->
+  <header class="fixed inset-x-0 top-0 z-50 bg-canvas/95 backdrop-blur border-b border-hairline">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between gap-4">
+
+        <!-- Logo / nome. Para usar logotipo em imagem, troque este bloco por:
+             <img src="logo.png" alt="Clínica Vitalis" class="h-9 w-auto"> -->
+        <a href="#inicio" class="flex items-center gap-2.5 shrink-0" aria-label="Página inicial da Clínica Vitalis">
+          <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-ink text-white">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+          </span>
+          <span class="text-[17px] font-medium text-ink">Clínica Vitalis</span>
+        </a>
+
+        <!-- Menu âncora (desktop) -->
+        <nav class="hidden lg:flex items-center gap-7 text-sm text-ink-muted" aria-label="Menu principal">
+          <a href="#especialidades" class="hover:text-ink transition-colors">Especialidades</a>
+          <a href="#diferenciais" class="hover:text-ink transition-colors">Por que nós</a>
+          <a href="#equipe" class="hover:text-ink transition-colors">Equipe</a>
+          <a href="#depoimentos" class="hover:text-ink transition-colors">Depoimentos</a>
+          <a href="#localizacao" class="hover:text-ink transition-colors">Localização</a>
+        </nav>
+
+        <!-- CTA de agendamento — único elemento com a cor de acento no header -->
+        <a href="https://wa.me/5511987654321?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20consulta."
+           target="_blank" rel="noopener"
+           class="inline-flex items-center gap-2 rounded-lg bg-acento px-[18px] py-2.5 text-[15px] font-medium text-white hover:bg-acento-escuro transition-colors">
+          <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          <span class="hidden sm:inline">Agendar no WhatsApp</span>
+          <span class="sm:hidden">Agendar</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════ 2. HERO ═══════════════════
+       Texto sobre o canvas creme + card fotográfico branco de 16px de raio
+       (o "product mockup card" do design system — aqui, a foto da clínica). -->
+  <section id="inicio" class="pt-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+        <div>
+          <p class="text-sm font-medium text-ink-muted">Atendimento humanizado e acolhedor</p>
+          <h1 class="display-xl mt-4 text-4xl sm:text-5xl lg:text-6xl font-medium text-ink">
+            Cuidar da sua saúde nunca foi tão simples
+          </h1>
+          <p class="mt-6 text-lg text-ink-muted leading-relaxed max-w-xl">
+            Cuidado completo para a sua saúde, no mesmo lugar — na Clínica Vitalis você encontra profissionais qualificados,
+            estrutura moderna e agendamento sem burocracia.
+          </p>
+
+          <div class="mt-9 flex flex-col sm:flex-row gap-3">
+            <a href="https://wa.me/5511987654321?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20consulta."
+               target="_blank" rel="noopener"
+               class="inline-flex items-center justify-center gap-2.5 rounded-lg bg-acento px-6 py-3.5 text-[15px] font-medium text-white hover:bg-acento-escuro transition-colors">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              Agendar consulta
+            </a>
+            <a href="tel:(11) 3456-7890"
+               class="inline-flex items-center justify-center gap-2.5 rounded-lg bg-surface-1 px-6 py-3.5 text-[15px] font-medium text-ink ring-1 ring-hairline hover:bg-surface-2 transition-colors">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/>
+              </svg>
+              Ligar agora
+            </a>
+          </div>
+
+          <p class="mt-6 text-sm text-ink-subtle">
+            Seg a Sex 8h às 19h · Sáb 8h às 13h
+          </p>
+        </div>
+
+        <!-- Card fotográfico (https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80 — troque a URL na classe .foto-hero no <style>) -->
+        <div class="rounded-2xl bg-surface-1 p-3 ring-1 ring-hairline">
+          <div class="foto-hero aspect-[4/3] rounded-xl" role="img" aria-label="Foto da recepção da Clínica Vitalis"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 3. PROVA SOCIAL ═══════════════════
+       Faixa preta invertida — o único momento escuro da página, reservado a
+       citações e confiança no design system (inverse-canvas). -->
+  <section aria-label="Avaliações no Google" class="bg-inverse-canvas">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-14 text-center sm:text-left">
+
+        <div class="flex items-center gap-4">
+          <span class="text-5xl font-medium tracking-tight text-white">4,9</span>
+          <div>
+            <div class="flex text-white" aria-hidden="true">
+              <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.367 2.446a1 1 0 00-.364 1.118l1.287 3.957c.3.922-.755 1.688-1.539 1.118l-3.367-2.446a1 1 0 00-1.175 0l-3.367 2.446c-.783.57-1.838-.196-1.538-1.118l1.286-3.957a1 1 0 00-.363-1.118L2.05 9.385c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.3-3.958z"/></svg>
+              <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.367 2.446a1 1 0 00-.364 1.118l1.287 3.957c.3.922-.755 1.688-1.539 1.118l-3.367-2.446a1 1 0 00-1.175 0l-3.367 2.446c-.783.57-1.838-.196-1.538-1.118l1.286-3.957a1 1 0 00-.363-1.118L2.05 9.385c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.3-3.958z"/></svg>
+              <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.367 2.446a1 1 0 00-.364 1.118l1.287 3.957c.3.922-.755 1.688-1.539 1.118l-3.367-2.446a1 1 0 00-1.175 0l-3.367 2.446c-.783.57-1.838-.196-1.538-1.118l1.286-3.957a1 1 0 00-.363-1.118L2.05 9.385c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.3-3.958z"/></svg>
+              <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.367 2.446a1 1 0 00-.364 1.118l1.287 3.957c.3.922-.755 1.688-1.539 1.118l-3.367-2.446a1 1 0 00-1.175 0l-3.367 2.446c-.783.57-1.838-.196-1.538-1.118l1.286-3.957a1 1 0 00-.363-1.118L2.05 9.385c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.3-3.958z"/></svg>
+              <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.367 2.446a1 1 0 00-.364 1.118l1.287 3.957c.3.922-.755 1.688-1.539 1.118l-3.367-2.446a1 1 0 00-1.175 0l-3.367 2.446c-.783.57-1.838-.196-1.538-1.118l1.286-3.957a1 1 0 00-.363-1.118L2.05 9.385c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.3-3.958z"/></svg>
+            </div>
+            <p class="text-sm text-white/60 mt-1">nota no Google</p>
+          </div>
+        </div>
+
+        <div class="hidden sm:block h-12 w-px bg-white/20" aria-hidden="true"></div>
+
+        <p class="text-white/80 text-lg">
+          <span class="font-medium text-white">327 avaliações</span> de pacientes reais
+        </p>
+
+        <div class="hidden sm:block h-12 w-px bg-white/20" aria-hidden="true"></div>
+
+        <p class="text-white/80 text-lg">Clínica bem avaliada na região</p>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 4. ESPECIALIDADES (Odontologia, Clínico Geral, Fisioterapia, Psicologia, Exames e Nutrição) ═══════════════════
+       Cards brancos flutuando no creme — profundidade sem sombra, só hairline.
+       Duplique ou remova os cards conforme as especialidades da clínica. -->
+  <section id="especialidades" class="py-20 sm:py-24 scroll-mt-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <p class="text-sm font-medium text-ink-muted">Especialidades</p>
+        <h2 class="display-md mt-3 text-3xl sm:text-4xl font-medium text-ink">Cuidado completo em um só lugar</h2>
+        <p class="mt-4 text-lg text-ink-muted">Conheça nossas áreas de atendimento e encontre o cuidado que você precisa.</p>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <!-- Card: Odontologia -->
+        <div class="rounded-xl bg-surface-1 p-6 ring-1 ring-hairline hover:ring-ink-subtle transition-colors duration-300">
+          <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-canvas text-ink">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.5c-1.5-2-4-2.8-6-1.5-2.2 1.4-2.6 4.4-1.6 7 .9 2.4 1.6 4.8 2 7.3.2 1 1.5 1.2 2 .3.8-1.6 1.4-3.3 2.3-4.8.5-.8 2.1-.8 2.6 0 .9 1.5 1.5 3.2 2.3 4.8.5.9 1.8.7 2-.3.4-2.5 1.1-4.9 2-7.3 1-2.6.6-5.6-1.6-7-2-1.3-4.5-.5-6 1.5z"/>
+            </svg>
+          </span>
+          <h3 class="mt-5 text-[17px] font-medium text-ink">Odontologia</h3>
+          <p class="mt-2 text-sm leading-relaxed text-ink-muted">Limpeza, restaurações, clareamento, ortodontia e implantes com tecnologia moderna.</p>
+        </div>
+
+        <!-- Card: Clínico Geral -->
+        <div class="rounded-xl bg-surface-1 p-6 ring-1 ring-hairline hover:ring-ink-subtle transition-colors duration-300">
+          <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-canvas text-ink">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 5.5v4a5 5 0 0010 0v-4M4.5 5.5h2m-2 0h-1m11 0h-2m2 0h1m-4.5 9.5v2.5a4.5 4.5 0 009 0V15m0 0a2 2 0 10.001-3.999A2 2 0 0019.5 15z"/>
+            </svg>
+          </span>
+          <h3 class="mt-5 text-[17px] font-medium text-ink">Clínico Geral</h3>
+          <p class="mt-2 text-sm leading-relaxed text-ink-muted">Consultas de rotina, prevenção e acompanhamento contínuo da sua saúde.</p>
+        </div>
+
+        <!-- Card: Fisioterapia -->
+        <div class="rounded-xl bg-surface-1 p-6 ring-1 ring-hairline hover:ring-ink-subtle transition-colors duration-300">
+          <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-canvas text-ink">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <circle cx="13.5" cy="4.5" r="2"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 8.5l-3 3 2.5 2.5-1.5 6m2-8.5l3 1.5 3-1m-11 3.5l-2 2-3 1"/>
+            </svg>
+          </span>
+          <h3 class="mt-5 text-[17px] font-medium text-ink">Fisioterapia</h3>
+          <p class="mt-2 text-sm leading-relaxed text-ink-muted">Reabilitação, alívio de dores e recuperação de movimentos com acompanhamento próximo.</p>
+        </div>
+
+        <!-- Card: Psicologia -->
+        <div class="rounded-xl bg-surface-1 p-6 ring-1 ring-hairline hover:ring-ink-subtle transition-colors duration-300">
+          <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-canvas text-ink">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 21c-4.5-3.5-8-6.5-8-10.2C4 7.6 6.4 5.5 9 5.5c1.2 0 2.3.5 3 1.4.7-.9 1.8-1.4 3-1.4 2.6 0 5 2.1 5 5.3 0 3.7-3.5 6.7-8 10.2z"/>
+            </svg>
+          </span>
+          <h3 class="mt-5 text-[17px] font-medium text-ink">Psicologia</h3>
+          <p class="mt-2 text-sm leading-relaxed text-ink-muted">Terapia individual em um espaço seguro e acolhedor para cuidar da mente.</p>
+        </div>
+
+        <!-- Card: Exames -->
+        <div class="rounded-xl bg-surface-1 p-6 ring-1 ring-hairline hover:ring-ink-subtle transition-colors duration-300">
+          <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-canvas text-ink">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3v5.25L4.5 17.25A2.25 2.25 0 006.53 20.5h10.94a2.25 2.25 0 002.03-3.25L14.25 8.25V3m-6 0h7.5M9 14.25h6"/>
+            </svg>
+          </span>
+          <h3 class="mt-5 text-[17px] font-medium text-ink">Exames</h3>
+          <p class="mt-2 text-sm leading-relaxed text-ink-muted">Exames laboratoriais e de imagem com resultados rápidos e confiáveis.</p>
+        </div>
+
+        <!-- Card: Nutrição -->
+        <div class="rounded-xl bg-surface-1 p-6 ring-1 ring-hairline hover:ring-ink-subtle transition-colors duration-300">
+          <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-canvas text-ink">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c0-3 2-5 5-5 0 3-2 5-5 5zm0 0C12 5.5 9.5 3.5 7 4c-3.5.7-4.5 5-3 9 1.4 3.7 4 7 6.5 7 .9 0 1.5-.5 1.5-.5s.6.5 1.5.5c2.5 0 5.1-3.3 6.5-7 .4-1 .6-2 .7-3"/>
+            </svg>
+          </span>
+          <h3 class="mt-5 text-[17px] font-medium text-ink">Nutrição</h3>
+          <p class="mt-2 text-sm leading-relaxed text-ink-muted">Planos alimentares personalizados para saúde, energia e qualidade de vida.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 5. DIFERENCIAIS ═══════════════════
+       Faixa em surface-2 (creme mais escuro) — a variação de superfície do
+       design system para alternar seções sem trocar de cor de marca. -->
+  <section id="diferenciais" class="bg-surface-2 py-20 sm:py-24 scroll-mt-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <p class="text-sm font-medium text-ink-muted">Diferenciais</p>
+        <h2 class="display-md mt-3 text-3xl sm:text-4xl font-medium text-ink">Por que escolher a Clínica Vitalis?</h2>
+        <p class="mt-4 text-lg text-ink-muted">Mais do que consultas: uma experiência de cuidado do início ao fim.</p>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <div class="rounded-xl bg-surface-1 p-6">
+          <svg class="h-6 w-6 text-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342"/>
+          </svg>
+          <h3 class="mt-4 font-medium text-ink">Equipe qualificada</h3>
+          <p class="mt-1.5 text-sm leading-relaxed text-ink-muted">Profissionais experientes, com registro ativo e em constante atualização.</p>
+        </div>
+
+        <div class="rounded-xl bg-surface-1 p-6">
+          <svg class="h-6 w-6 text-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75"/>
+          </svg>
+          <h3 class="mt-4 font-medium text-ink">Ambiente acolhedor</h3>
+          <p class="mt-1.5 text-sm leading-relaxed text-ink-muted">Recepção confortável e atendimento que faz você se sentir em casa.</p>
+        </div>
+
+        <div class="rounded-xl bg-surface-1 p-6">
+          <svg class="h-6 w-6 text-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z"/>
+          </svg>
+          <h3 class="mt-4 font-medium text-ink">Estrutura moderna</h3>
+          <p class="mt-1.5 text-sm leading-relaxed text-ink-muted">Equipamentos atuais e protocolos rigorosos de biossegurança.</p>
+        </div>
+
+        <div class="rounded-xl bg-surface-1 p-6">
+          <svg class="h-6 w-6 text-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+          </svg>
+          <h3 class="mt-4 font-medium text-ink">Atendimento humanizado</h3>
+          <p class="mt-1.5 text-sm leading-relaxed text-ink-muted">Cada paciente é único: escutamos com atenção e cuidamos com empatia.</p>
+        </div>
+
+        <div class="rounded-xl bg-surface-1 p-6">
+          <svg class="h-6 w-6 text-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
+          </svg>
+          <h3 class="mt-4 font-medium text-ink">Agendamento fácil</h3>
+          <p class="mt-1.5 text-sm leading-relaxed text-ink-muted">Marque pelo WhatsApp em minutos, sem espera e sem burocracia.</p>
+        </div>
+
+        <div class="rounded-xl bg-surface-1 p-6">
+          <svg class="h-6 w-6 text-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <h3 class="mt-4 font-medium text-ink">Pontualidade</h3>
+          <p class="mt-1.5 text-sm leading-relaxed text-ink-muted">Respeitamos o seu tempo, com horários organizados e pouca espera.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 6. EQUIPE / CORPO CLÍNICO ═══════════════════
+       Para usar fotos reais, troque o <div> do avatar por:
+       <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=400&h=400&q=80&crop=faces" alt="Dra. Marina Sato"
+            class="h-24 w-24 rounded-full object-cover"> -->
+  <section id="equipe" class="py-20 sm:py-24 scroll-mt-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <p class="text-sm font-medium text-ink-muted">Nossa equipe</p>
+        <h2 class="display-md mt-3 text-3xl sm:text-4xl font-medium text-ink">Profissionais que cuidam de você</h2>
+        <p class="mt-4 text-lg text-ink-muted">Corpo clínico qualificado e comprometido com o seu bem-estar.</p>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+        <div class="rounded-xl bg-surface-1 p-6 ring-1 ring-hairline">
+          <!-- https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=400&h=400&q=80&crop=faces -->
+          <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=400&h=400&q=80&crop=faces" alt="Dra. Marina Sato" class="h-24 w-24 rounded-full object-cover" loading="lazy">
+          <h3 class="mt-5 font-medium text-ink">Dra. Marina Sato</h3>
+          <p class="mt-1 text-sm text-ink-muted">Odontologia</p>
+          <p class="mt-0.5 text-xs text-ink-subtle">CRO-SP 87.654</p>
+        </div>
+
+        <div class="rounded-xl bg-surface-1 p-6 ring-1 ring-hairline">
+          <!-- https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=400&h=400&q=80&crop=faces -->
+          <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=400&h=400&q=80&crop=faces" alt="Dr. Rafael Nogueira" class="h-24 w-24 rounded-full object-cover" loading="lazy">
+          <h3 class="mt-5 font-medium text-ink">Dr. Rafael Nogueira</h3>
+          <p class="mt-1 text-sm text-ink-muted">Clínico Geral</p>
+          <p class="mt-0.5 text-xs text-ink-subtle">CRM-SP 154.321</p>
+        </div>
+
+        <div class="rounded-xl bg-surface-1 p-6 ring-1 ring-hairline">
+          <!-- https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&h=400&q=80&crop=faces -->
+          <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&h=400&q=80&crop=faces" alt="Dra. Camila Duarte" class="h-24 w-24 rounded-full object-cover" loading="lazy">
+          <h3 class="mt-5 font-medium text-ink">Dra. Camila Duarte</h3>
+          <p class="mt-1 text-sm text-ink-muted">Fisioterapia</p>
+          <p class="mt-0.5 text-xs text-ink-subtle">CREFITO-3 245.678-F</p>
+        </div>
+
+        <div class="rounded-xl bg-surface-1 p-6 ring-1 ring-hairline">
+          <!-- https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&h=400&q=80&crop=faces -->
+          <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&h=400&q=80&crop=faces" alt="Dr. André Lopes" class="h-24 w-24 rounded-full object-cover" loading="lazy">
+          <h3 class="mt-5 font-medium text-ink">Dr. André Lopes</h3>
+          <p class="mt-1 text-sm text-ink-muted">Psicologia</p>
+          <p class="mt-0.5 text-xs text-ink-subtle">CRP 06/123.456</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 7. DEPOIMENTOS ═══════════════════
+       Testimonial cards do design system: brancos, 12px de raio, padding 32px,
+       corpo em body-lg. Copie avaliações reais do Google. -->
+  <section id="depoimentos" class="bg-surface-2 py-20 sm:py-24 scroll-mt-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <p class="text-sm font-medium text-ink-muted">Depoimentos</p>
+        <h2 class="display-md mt-3 text-3xl sm:text-4xl font-medium text-ink">O que nossos pacientes dizem</h2>
+        <p class="mt-4 text-lg text-ink-muted">Avaliações reais publicadas no Google.</p>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4">
+
+        <figure class="rounded-xl bg-surface-1 p-8">
+          <blockquote class="text-lg leading-relaxed text-ink">"Atendimento impecável do início ao fim. Fui atendida no horário marcado e a equipe explicou cada etapa com calma. Virei paciente fiel."</blockquote>
+          <figcaption class="mt-6 flex items-center gap-3">
+            <span class="flex h-11 w-11 items-center justify-center rounded-full bg-surface-2 text-sm font-medium text-ink-muted">Fernanda Almeida</span>
+            <div>
+              <p class="text-sm font-medium text-ink">Fernanda Almeida</p>
+              <p class="text-xs text-ink-subtle">Avaliação no Google · ★★★★★</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="rounded-xl bg-surface-1 p-8">
+          <blockquote class="text-lg leading-relaxed text-ink">"Levo meus dois filhos na Vitalis há mais de um ano. A recepção é acolhedora e os médicos são muito atenciosos com crianças."</blockquote>
+          <figcaption class="mt-6 flex items-center gap-3">
+            <span class="flex h-11 w-11 items-center justify-center rounded-full bg-surface-2 text-sm font-medium text-ink-muted">Ricardo Menezes</span>
+            <div>
+              <p class="text-sm font-medium text-ink">Ricardo Menezes</p>
+              <p class="text-xs text-ink-subtle">Avaliação no Google · ★★★★★</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="rounded-xl bg-surface-1 p-8">
+          <blockquote class="text-lg leading-relaxed text-ink">"Consegui encaixar as sessões de fisioterapia antes do trabalho. Agendei pelo WhatsApp em dois minutos, sem telefone ocupado."</blockquote>
+          <figcaption class="mt-6 flex items-center gap-3">
+            <span class="flex h-11 w-11 items-center justify-center rounded-full bg-surface-2 text-sm font-medium text-ink-muted">Juliana Castro</span>
+            <div>
+              <p class="text-sm font-medium text-ink">Juliana Castro</p>
+              <p class="text-xs text-ink-subtle">Avaliação no Google · ★★★★★</p>
+            </div>
+          </figcaption>
+        </figure>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 8. LOCALIZAÇÃO ═══════════════════ -->
+  <section id="localizacao" class="py-20 sm:py-24 scroll-mt-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <p class="text-sm font-medium text-ink-muted">Onde estamos</p>
+        <h2 class="display-md mt-3 text-3xl sm:text-4xl font-medium text-ink">Venha nos visitar</h2>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
+
+        <!-- Informações de contato -->
+        <div class="rounded-xl bg-surface-1 p-8 ring-1 ring-hairline flex flex-col justify-center gap-6">
+
+          <div class="flex gap-4">
+            <svg class="h-5 w-5 mt-0.5 shrink-0 text-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+            </svg>
+            <div>
+              <h3 class="font-medium text-ink">Endereço</h3>
+              <p class="mt-1 text-sm text-ink-muted">Av. Paulista, 1048 — Bela Vista, São Paulo/SP</p>
+            </div>
+          </div>
+
+          <div class="border-t border-hairline-soft"></div>
+
+          <div class="flex gap-4">
+            <svg class="h-5 w-5 mt-0.5 shrink-0 text-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <div>
+              <h3 class="font-medium text-ink">Horário de funcionamento</h3>
+              <p class="mt-1 text-sm text-ink-muted">Seg a Sex 8h às 19h · Sáb 8h às 13h</p>
+            </div>
+          </div>
+
+          <div class="border-t border-hairline-soft"></div>
+
+          <div class="flex gap-4">
+            <svg class="h-5 w-5 mt-0.5 shrink-0 text-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/>
+            </svg>
+            <div>
+              <h3 class="font-medium text-ink">Telefone e e-mail</h3>
+              <p class="mt-1 text-sm text-ink-muted">
+                <a href="tel:(11) 3456-7890" class="hover:text-ink transition-colors">(11) 3456-7890</a><br />
+                <a href="mailto:contato@clinicavitalis.com.br" class="hover:text-ink transition-colors">contato@clinicavitalis.com.br</a>
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Mapa incorporado: cole em src a URL do embed do Google Maps (https://www.google.com/maps?q=Av.+Paulista,+1048,+S%C3%A3o+Paulo&output=embed)
+             Google Maps → Compartilhar → Incorporar um mapa → copie a URL do atributo src -->
+        <div class="overflow-hidden rounded-xl ring-1 ring-hairline min-h-[320px] bg-surface-2">
+          <iframe
+            src="https://www.google.com/maps?q=Av.+Paulista,+1048,+S%C3%A3o+Paulo&output=embed"
+            title="Mapa com a localização da Clínica Vitalis"
+            class="h-full w-full min-h-[320px] border-0"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 9. CTA FINAL ═══════════════════
+       CTA banner do design system: card branco de 48px de padding sobre o
+       creme, headline calma — e o acento aparece só no botão de agendar. -->
+  <section class="pb-20 sm:pb-24">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="rounded-2xl bg-surface-1 ring-1 ring-hairline p-10 sm:p-14 text-center">
+        <h2 class="display-md text-3xl sm:text-4xl font-medium text-ink">
+          Sua saúde não pode esperar
+        </h2>
+        <p class="mt-4 text-lg text-ink-muted max-w-xl mx-auto">
+          Atendimento rápido pelo WhatsApp — em poucos minutos você garante seu horário na Clínica Vitalis.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row justify-center gap-3">
+          <a href="https://wa.me/5511987654321?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20consulta."
+             target="_blank" rel="noopener"
+             class="inline-flex items-center justify-center gap-2.5 rounded-lg bg-acento px-7 py-3.5 text-[15px] font-medium text-white hover:bg-acento-escuro transition-colors">
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            Agendar pelo WhatsApp
+          </a>
+          <a href="tel:(11) 3456-7890"
+             class="inline-flex items-center justify-center gap-2.5 rounded-lg bg-surface-1 px-7 py-3.5 text-[15px] font-medium text-ink ring-1 ring-hairline hover:bg-canvas transition-colors">
+            Ligar: (11) 3456-7890
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 10. RODAPÉ ═══════════════════
+       Padrão do design system: rodapé no próprio canvas creme, texto muted,
+       sem faixa escura. -->
+  <footer class="border-t border-hairline bg-canvas">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+
+        <div>
+          <p class="text-[17px] font-medium text-ink">Clínica Vitalis</p>
+          <p class="mt-3 text-sm leading-relaxed text-ink-muted">Cuidado completo para a sua saúde, no mesmo lugar</p>
+          <div class="mt-5 flex gap-3">
+            <a href="https://instagram.com/clinicavitalis" target="_blank" rel="noopener" aria-label="Instagram da Clínica Vitalis"
+               class="flex h-10 w-10 items-center justify-center rounded-full bg-surface-1 ring-1 ring-hairline text-ink hover:bg-surface-2 transition-colors">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+              </svg>
+            </a>
+            <a href="https://wa.me/5511987654321" target="_blank" rel="noopener" aria-label="WhatsApp da Clínica Vitalis"
+               class="flex h-10 w-10 items-center justify-center rounded-full bg-surface-1 ring-1 ring-hairline text-ink hover:bg-surface-2 transition-colors">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm font-medium text-ink">Contato</p>
+          <ul class="mt-4 space-y-3 text-sm text-ink-muted">
+            <li><a href="tel:(11) 3456-7890" class="hover:text-ink transition-colors">(11) 3456-7890</a></li>
+            <li><a href="mailto:contato@clinicavitalis.com.br" class="hover:text-ink transition-colors">contato@clinicavitalis.com.br</a></li>
+            <li>Av. Paulista, 1048 — Bela Vista, São Paulo/SP</li>
+            <li>Seg a Sex 8h às 19h · Sáb 8h às 13h</li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="text-sm font-medium text-ink">Navegação</p>
+          <ul class="mt-4 space-y-3 text-sm text-ink-muted">
+            <li><a href="#especialidades" class="hover:text-ink transition-colors">Especialidades</a></li>
+            <li><a href="#diferenciais" class="hover:text-ink transition-colors">Por que nós</a></li>
+            <li><a href="#equipe" class="hover:text-ink transition-colors">Equipe</a></li>
+            <li><a href="#depoimentos" class="hover:text-ink transition-colors">Depoimentos</a></li>
+            <li><a href="#localizacao" class="hover:text-ink transition-colors">Localização</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="mt-12 border-t border-hairline-soft pt-6 text-center text-xs text-ink-subtle">
+        © <span id="ano"></span> Clínica Vitalis — Todos os direitos reservados.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════ BOTÃO FLUTUANTE DE WHATSAPP ═══════════════════ -->
+  <a href="https://wa.me/5511987654321?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20consulta."
+     target="_blank" rel="noopener"
+     aria-label="Agendar consulta pelo WhatsApp"
+     class="whats-flutuante fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white hover:scale-110 transition">
+    <svg class="h-7 w-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+
+  <script>
+    // Ano atual no rodapé
+    document.getElementById('ano').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

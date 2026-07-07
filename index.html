@@ -5,200 +5,424 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OnlineJá — Sua empresa online em 48 horas</title>
   <meta name="description" content="Sua empresa online em 48 horas. Sem burocracia, sem enrolação. Site no ar com domínio, hospedagem e WhatsApp integrado.">
+  <meta name="theme-color" content="#010102">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <!-- ============ 1. Top Navigation ============ -->
-  <header class="nav" id="topo">
+  <!-- Trilho de progresso: o scroll percorre as 48h de entrega -->
+  <div class="rail" aria-hidden="true">
+    <div class="rail-fill" id="rail-fill"></div>
+    <span class="rail-tick" style="--x:0%" data-hour="0"></span>
+    <span class="rail-tick" style="--x:33.3%" data-hour="16"></span>
+    <span class="rail-tick" style="--x:58.3%" data-hour="28"></span>
+    <span class="rail-tick" style="--x:79.1%" data-hour="38"></span>
+    <span class="rail-tick rail-tick-end" style="--x:100%" data-hour="48"></span>
+  </div>
+
+  <!-- Deploy log: o status da construção acompanha o scroll -->
+  <div class="deploy-pill" id="deploy-pill" aria-hidden="true">
+    <span class="deploy-dot"></span>
+    <span class="deploy-hour" id="deploy-hour">00h</span>
+    <span class="deploy-sep"></span>
+    <span class="deploy-msg" id="deploy-msg">você chegou</span>
+  </div>
+
+  <!-- ============ 1. Navegação ============ -->
+  <header class="nav" id="site-nav">
     <div class="nav-inner container">
-      <a href="#topo" class="nav-logo">OnlineJá</a>
+      <a href="#topo" class="nav-logo">Online<span class="nav-logo-accent">Já</span></a>
       <nav class="nav-links" id="nav-links" aria-label="Navegação principal">
         <a href="#como-funciona" class="nav-link">Como funciona</a>
-        <a href="#cases" class="nav-link">Cases</a>
-        <a href="#contato" class="nav-link">Falar com a gente</a>
+        <a href="#modelos" class="nav-link">Modelos</a>
+        <a href="#incluso" class="nav-link">O que está incluso</a>
+        <a href="#quem-somos" class="nav-link">Quem somos</a>
       </nav>
       <div class="nav-actions">
+        <a href="#modelos" class="btn btn-secondary nav-btn-secondary">Ver modelos</a>
         <a href="#contato" class="btn btn-primary">Quero meu site</a>
         <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
-          <span></span><span></span><span></span>
+          <span></span><span></span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- ============ 2. Hero ============ -->
-  <section class="hero">
-    <div class="container hero-grid">
-      <div class="hero-copy">
-        <p class="eyebrow">Entrega em 48 horas</p>
-        <h1 class="display-xl">Sua empresa existe. Mas ela está online?</h1>
-        <p class="hero-sub">A maioria das empresas ainda não tem site. A gente resolve isso em 48 horas — sem reunião de 2 horas, sem planilha de briefing, sem enrolação.</p>
-        <div class="hero-actions">
-          <a href="#contato" class="btn btn-primary">Quero meu site agora →</a>
-          <a href="#como-funciona" class="btn btn-secondary">Ver como funciona</a>
-        </div>
-      </div>
-      <div class="hero-art">
-        <div class="hero-card">
-          <div class="browser">
-            <div class="browser-bar">
-              <span class="browser-dot"></span>
-              <span class="browser-dot"></span>
-              <span class="browser-dot"></span>
-              <span class="browser-url">seunegocio.com.br</span>
+  <main id="topo">
+
+    <!-- ============ 2. Hero — cena scrollytelling: o site constrói com o scroll ============ -->
+    <section class="hero-scene" id="hero-scene" data-build-hour="0" data-build-msg="você chegou" data-build-emoji="">
+      <div class="hero-sticky" id="hero-sticky">
+        <div class="hero-halo" aria-hidden="true"></div>
+        <div class="container hero-grid">
+
+          <div class="hero-copy">
+            <p class="status-chip"><span class="chip-dot"></span> Entrega em 48 horas</p>
+            <h1 class="display-xl split in-load" id="hero-title">Sua empresa existe. Mas ela está online?</h1>
+            <p class="hero-sub">A maioria das empresas ainda não tem site. A gente resolve isso em 48 horas — sem reunião de 2 horas, sem planilha de briefing, sem enrolação.</p>
+            <div class="hero-actions">
+              <a href="#contato" class="btn btn-primary btn-lg">Quero meu site agora</a>
+              <a href="#modelos" class="btn btn-secondary btn-lg">Ver modelos prontos</a>
             </div>
-            <div class="browser-page">
-              <div class="mock-nav build" style="--i:1">
-                <span class="mock-logo"></span>
-                <span class="mock-navlinks">
-                  <i></i><i></i><i></i>
-                </span>
-                <span class="mock-btn"></span>
+            <ul class="hero-ticks" aria-label="Garantias">
+              <li>Domínio e hospedagem inclusos</li>
+              <li>WhatsApp integrado</li>
+              <li>1 rodada de ajustes</li>
+            </ul>
+          </div>
+
+          <div class="hero-art">
+            <div class="panel hero-panel" id="hero-panel" data-tilt>
+              <div class="browser">
+                <div class="browser-bar">
+                  <span class="b-dot"></span><span class="b-dot"></span><span class="b-dot"></span>
+                  <span class="browser-url"><span class="url-lock" id="url-lock">🔒</span><span id="hero-url">seunegocio.com.br</span><span class="url-caret" id="url-caret"></span></span>
+                  <span class="build-status" id="build-status">construindo…</span>
+                </div>
+                <div class="site" id="hero-site">
+                  <div class="s-nav s-el">
+                    <span class="s-logo"></span>
+                    <span class="s-links"><i></i><i></i><i></i></span>
+                    <span class="s-btn"></span>
+                  </div>
+                  <div class="s-headline s-el">
+                    <i class="sl sl-1"></i>
+                    <i class="sl sl-2"></i>
+                  </div>
+                  <div class="s-sub s-el"><i class="sl sl-3"></i></div>
+                  <span class="s-cta s-el"></span>
+                  <div class="s-img s-el"></div>
+                  <div class="s-cards s-el"><i></i><i></i><i></i></div>
+                </div>
               </div>
-              <div class="mock-hero">
-                <span class="mock-line lg build" style="--i:2"></span>
-                <span class="mock-line lg short build" style="--i:3"></span>
-                <span class="mock-line sm build" style="--i:4"></span>
-                <span class="mock-cta build" style="--i:5"></span>
+              <div class="buildlog" aria-hidden="true">
+                <span class="bl bl-1">▸ estrutura montada</span>
+                <span class="bl bl-2">▸ conteúdo aplicado</span>
+                <span class="bl bl-3">▸ whatsapp conectado</span>
+                <span class="bl bl-4 bl-ok">✓ site publicado</span>
               </div>
-              <div class="mock-cards">
-                <span class="mock-card pink build" style="--i:6"></span>
-                <span class="mock-card teal build" style="--i:7"></span>
-                <span class="mock-card lavender build" style="--i:8"></span>
-              </div>
-              <span class="mock-caret"></span>
             </div>
           </div>
-          <div class="hero-badge">⚡ No ar em 48h</div>
+
+        </div>
+        <p class="scroll-hint" id="scroll-hint" aria-hidden="true">role para construir<span class="hint-chevron">↓</span></p>
+      </div>
+    </section>
+
+    <!-- ============ 3. Prova social ============ -->
+    <section class="proof" id="cases" data-build-hour="6" data-build-msg="briefing recebido" data-build-emoji="">
+      <div class="proof-inner container">
+        <p class="eyebrow proof-label">Já ajudamos</p>
+        <div class="marquee">
+          <div class="marquee-track" id="marquee-track">
+            <span class="marquee-group">
+              Salão da Ana <i>·</i> Advocacia Pereira <i>·</i> Clínica Viva <i>·</i> Oficina do João <i>·</i> Studio Bela <i>·</i>
+            </span>
+            <span class="marquee-group" aria-hidden="true">
+              Salão da Ana <i>·</i> Advocacia Pereira <i>·</i> Clínica Viva <i>·</i> Oficina do João <i>·</i> Studio Bela <i>·</i>
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ============ 3. Social proof bar ============ -->
-  <section class="proof" id="cases">
-    <div class="proof-inner">
-      <p class="eyebrow proof-label">Já ajudamos</p>
-      <div class="marquee" aria-hidden="false">
-        <div class="marquee-track">
-          <span class="marquee-group">
-            Salão da Ana <i>·</i> Advocacia Pereira <i>·</i> Clínica Viva <i>·</i> Oficina do João <i>·</i> Studio Bela <i>·</i>
-          </span>
-          <span class="marquee-group" aria-hidden="true">
-            Salão da Ana <i>·</i> Advocacia Pereira <i>·</i> Clínica Viva <i>·</i> Oficina do João <i>·</i> Studio Bela <i>·</i>
-          </span>
+    <!-- ============ 4. Como funciona ============ -->
+    <section class="section" id="como-funciona" data-build-hour="16" data-build-msg="construindo o seu site" data-build-emoji="">
+      <div class="container">
+        <p class="eyebrow reveal" style="--rd:0">Como funciona</p>
+        <h2 class="display-lg split">Do zero ao ar em 48 horas</h2>
+        <p class="section-sub reveal" style="--rd:1">Um processo que a gente já rodou dezenas de vezes. Simples para você, rápido para todo mundo. A linha abaixo é o seu site acontecendo.</p>
+
+        <div class="steps-track" id="steps-track">
+          <div class="steps-rail" aria-hidden="true"><span class="steps-rail-fill"></span></div>
+          <div class="steps-grid">
+            <div class="step-card reveal" style="--rd:0">
+              <span class="step-num"><span class="sn-n">01</span><span class="sn-c">✓</span></span>
+              <h3 class="card-title">WhatsApp em 5 minutos</h3>
+              <p class="step-body">Você responde 5 perguntas sobre o seu negócio. Sem formulário, sem chamada.</p>
+            </div>
+            <div class="step-card reveal" style="--rd:1">
+              <span class="step-num"><span class="sn-n">02</span><span class="sn-c">✓</span></span>
+              <h3 class="card-title">Proposta na hora</h3>
+              <p class="step-body">Enviamos o valor e o prazo. Aprovação com 1 mensagem.</p>
+            </div>
+            <div class="step-card reveal" style="--rd:2">
+              <span class="step-num"><span class="sn-n">03</span><span class="sn-c">✓</span></span>
+              <h3 class="card-title">Construção em 48h</h3>
+              <p class="step-body">A gente desenvolve. Você acompanha. Uma rodada de ajustes incluída.</p>
+            </div>
+            <div class="step-card reveal" style="--rd:3">
+              <span class="step-num"><span class="sn-n">04</span><span class="sn-c">✓</span></span>
+              <h3 class="card-title">Site no ar</h3>
+              <p class="step-body">Domínio configurado, hospedagem ativa, link funcionando. Pronto.</p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ============ 4. Como funciona ============ -->
-  <section class="section" id="como-funciona">
-    <div class="container">
-      <h2 class="display-lg">Do zero ao ar em 48 horas</h2>
-      <p class="section-sub">Um processo que a gente já rodou dezenas de vezes. Simples para você, rápido para todo mundo.</p>
-      <div class="steps-grid">
-        <div class="step-card">
-          <span class="badge-pill">01</span>
-          <h3 class="title-md">WhatsApp em 5 minutos</h3>
-          <p class="step-body">Você responde 5 perguntas sobre o seu negócio. Sem formulário, sem chamada.</p>
+    <!-- ============ 5. Modelos prontos ============ -->
+    <section class="section" id="modelos" data-build-hour="28" data-build-msg="aplicando o design" data-build-emoji="">
+      <div class="container">
+        <p class="eyebrow reveal" style="--rd:0">Modelos prontos</p>
+        <h2 class="display-lg split">Veja o que você recebe</h2>
+        <p class="section-sub reveal" style="--rd:1">Modelos reais, completos e navegáveis — desenhados por segmento e personalizados com a cara do seu negócio em 48 horas.</p>
+
+        <div class="models-grid">
+
+          <!-- Modelo: Clínicas -->
+          <article class="model-card reveal" style="--rd:0" data-tilt>
+            <a href="templates/clinica/index.html" target="_blank" rel="noopener" class="model-preview" aria-label="Abrir modelo para clínicas em nova aba">
+              <div class="model-mock mock-clinica">
+                <div class="mm-nav">
+                  <span class="mm-logo mm-teal"></span>
+                  <span class="mm-links"><i></i><i></i><i></i></span>
+                  <span class="mm-cta mm-teal-bg"></span>
+                </div>
+                <div class="mm-hero">
+                  <div class="mm-hero-copy">
+                    <span class="mm-line lg"></span>
+                    <span class="mm-line lg short"></span>
+                    <span class="mm-line sm"></span>
+                    <span class="mm-pill mm-teal-bg"></span>
+                  </div>
+                  <span class="mm-photo mm-photo-clinica">🩺</span>
+                </div>
+                <div class="mm-row">
+                  <span class="mm-tile"></span>
+                  <span class="mm-tile"></span>
+                  <span class="mm-tile"></span>
+                </div>
+              </div>
+              <span class="model-open">Ver ao vivo ↗</span>
+            </a>
+            <div class="model-info">
+              <div class="model-title-row">
+                <h3 class="card-title">Clínicas de saúde</h3>
+                <span class="model-chip">Saúde</span>
+              </div>
+              <p class="model-desc">Agendamento pelo WhatsApp, especialidades, corpo clínico, convênios e localização. Tom editorial calmo que passa confiança.</p>
+              <ul class="model-tags">
+                <li>Agendamento 1-toque</li>
+                <li>Prova social Google</li>
+                <li>Mapa integrado</li>
+              </ul>
+              <a href="templates/clinica/index.html" target="_blank" rel="noopener" class="model-link">Explorar modelo completo →</a>
+            </div>
+          </article>
+
+          <!-- Modelo: Imobiliárias -->
+          <article class="model-card reveal" style="--rd:1" data-tilt>
+            <a href="templates/imobiliaria/index.html" target="_blank" rel="noopener" class="model-preview" aria-label="Abrir modelo para imobiliárias em nova aba">
+              <div class="model-mock mock-imob">
+                <div class="mm-nav">
+                  <span class="mm-logo mm-gold"></span>
+                  <span class="mm-links mm-links-light"><i></i><i></i><i></i></span>
+                  <span class="mm-cta mm-gold-bg"></span>
+                </div>
+                <div class="mm-hero">
+                  <div class="mm-hero-copy">
+                    <span class="mm-line lg mm-line-light"></span>
+                    <span class="mm-line lg short mm-line-light"></span>
+                    <span class="mm-line sm mm-line-dim"></span>
+                    <span class="mm-pill mm-gold-bg"></span>
+                  </div>
+                  <span class="mm-photo mm-photo-imob">🏠</span>
+                </div>
+                <div class="mm-row">
+                  <span class="mm-tile mm-tile-dark"></span>
+                  <span class="mm-tile mm-tile-dark"></span>
+                  <span class="mm-tile mm-tile-dark"></span>
+                </div>
+              </div>
+              <span class="model-open">Ver ao vivo ↗</span>
+            </a>
+            <div class="model-info">
+              <div class="model-title-row">
+                <h3 class="card-title">Imobiliárias e corretores</h3>
+                <span class="model-chip">Imóveis</span>
+              </div>
+              <p class="model-desc">Vitrine de imóveis com fotos, tags de venda e aluguel, depoimentos e captação de proprietários. Visual premium navy e dourado.</p>
+              <ul class="model-tags">
+                <li>Vitrine de imóveis</li>
+                <li>Contato por card</li>
+                <li>Anuncie seu imóvel</li>
+              </ul>
+              <a href="templates/imobiliaria/index.html" target="_blank" rel="noopener" class="model-link">Explorar modelo completo →</a>
+            </div>
+          </article>
+
         </div>
-        <div class="step-card">
-          <span class="badge-pill">02</span>
-          <h3 class="title-md">Proposta na hora</h3>
-          <p class="step-body">Enviamos o valor e o prazo. Aprovação com 1 mensagem.</p>
-        </div>
-        <div class="step-card">
-          <span class="badge-pill">03</span>
-          <h3 class="title-md">Construção em 48h</h3>
-          <p class="step-body">A gente desenvolve. Você acompanha. Uma rodada de ajustes incluída.</p>
-        </div>
-        <div class="step-card">
-          <span class="badge-pill">04</span>
-          <h3 class="title-md">Site no ar</h3>
-          <p class="step-body">Domínio configurado, hospedagem ativa, link funcionando. Pronto.</p>
+
+        <p class="models-note reveal" style="--rd:2">Seu segmento não está aqui? A gente desenha do zero — no mesmo prazo. <a href="#contato">Fala com a gente →</a></p>
+      </div>
+    </section>
+
+    <!-- ============ 6. O que está incluso — bento ============ -->
+    <section class="section" id="incluso" data-build-hour="38" data-build-msg="domínio, ssl e whatsapp ativos" data-build-emoji="">
+      <div class="container">
+        <p class="eyebrow reveal" style="--rd:0">O que está incluso</p>
+        <h2 class="display-lg split">Tudo que você precisa. Nada que você não precisa.</h2>
+
+        <div class="bento">
+
+          <!-- A: 48h ring -->
+          <div class="bento-cell bento-a reveal" style="--rd:0">
+            <div class="ring-wrap" aria-hidden="true">
+              <svg class="ring" viewBox="0 0 120 120">
+                <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+                <circle class="ring-fg" id="ring-fg" cx="60" cy="60" r="52"></circle>
+              </svg>
+              <span class="ring-num" id="ring-num">48h</span>
+            </div>
+            <h3 class="card-title">Entrega em 48 horas</h3>
+            <p class="bento-body">Não é promessa. É o nosso processo — testado e cronometrado.</p>
+            <ul class="config-chips" aria-label="Tudo configurado">
+              <li class="chip-ok" style="--cd:0">✓ domínio</li>
+              <li class="chip-ok" style="--cd:1">✓ hospedagem</li>
+              <li class="chip-ok" style="--cd:2">✓ SSL</li>
+              <li class="chip-ok" style="--cd:3">✓ formulário</li>
+            </ul>
+          </div>
+
+          <!-- B: WhatsApp chat -->
+          <div class="bento-cell bento-b reveal" style="--rd:1">
+            <div class="chat" aria-hidden="true">
+              <div class="chat-bubble chat-in">Oi! Preciso de um site pro meu salão 💇‍♀️</div>
+              <div class="chat-typing"><span></span><span></span><span></span></div>
+              <div class="chat-bubble chat-out">Fechado! Me responde 5 perguntas e em 48h ele tá no ar 🚀</div>
+              <div class="chat-meta">hoje, 14:02 <span class="chat-check">✓✓</span></div>
+            </div>
+            <h3 class="card-title">WhatsApp integrado</h3>
+            <p class="bento-body">Botão flutuante e link direto. Seu cliente fala com você em 1 toque — e você fala com a gente do mesmo jeito.</p>
+          </div>
+
+          <!-- C: Design que converte -->
+          <div class="bento-cell reveal" style="--rd:0">
+            <div class="mini-phone" aria-hidden="true">
+              <span class="mp-notch"></span>
+              <span class="mp-line"></span>
+              <span class="mp-line short"></span>
+              <span class="mp-btn"></span>
+            </div>
+            <h3 class="card-title">Design que converte</h3>
+            <p class="bento-body">Layout limpo, mobile-first, pensado para transformar visita em contato.</p>
+          </div>
+
+          <!-- D: Google-ready -->
+          <div class="bento-cell reveal" style="--rd:1">
+            <div class="mini-serp" aria-hidden="true">
+              <span class="serp-url">seunegocio.com.br</span>
+              <span class="serp-title">Seu Negócio — atendimento na sua cidade</span>
+              <span class="serp-line"></span>
+              <span class="serp-line short"></span>
+            </div>
+            <h3 class="card-title">Google-ready</h3>
+            <p class="bento-body">Google Meu Negócio configurado. Você aparece nas buscas da sua cidade.</p>
+          </div>
+
+          <!-- E: Suporte humano -->
+          <div class="bento-cell reveal" style="--rd:2">
+            <div class="support-row" aria-hidden="true">
+              <span class="avatar">W</span>
+              <span class="avatar">D</span>
+              <span class="support-status"><span class="dot-online"></span> online agora</span>
+            </div>
+            <h3 class="card-title">Suporte humano</h3>
+            <p class="bento-body">Dúvida? WhatsApp direto com quem fez o site. Sem ticket, sem bot.</p>
+          </div>
+
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ============ 5. Features ============ -->
-  <section class="section" id="incluso">
-    <div class="container">
-      <h2 class="display-lg">Tudo que você precisa. Nada que você não precisa.</h2>
-      <div class="features-grid">
-        <div class="feature-card feature-pink">
-          <span class="badge-pill feature-tag">🚀 Tudo configurado</span>
-          <h3 class="display-sm">Site no ar</h3>
-          <p>Hospedagem, domínio, SSL, formulário de contato. Tudo configurado e funcionando.</p>
+    <!-- ============ 7. Depoimento ============ -->
+    <section class="section section-quote" id="depoimento" data-build-hour="42" data-build-msg="revisão final" data-build-emoji="">
+      <div class="container">
+        <figure class="quote-card reveal" style="--rd:0">
+          <blockquote class="quote-text split">“Em dois dias meu salão tinha site, mapa e botão de agendamento. Na primeira semana já chegou cliente novo pelo Google.”</blockquote>
+          <figcaption class="quote-author">
+            <span class="avatar avatar-quote">A</span>
+            <span>
+              <strong>Ana Ribeiro</strong>
+              <em>Salão da Ana — São Paulo</em>
+            </span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ 8. Quem somos ============ -->
+    <section class="section" id="quem-somos" data-build-hour="44" data-build-msg="últimos ajustes" data-build-emoji="">
+      <div class="container about-grid">
+        <div class="about-copy">
+          <p class="eyebrow reveal" style="--rd:0">Quem somos</p>
+          <h2 class="display-md split">Dois devs. Uma promessa de 48 horas.</h2>
+          <p class="about-body reveal" style="--rd:1">A gente não é agência grande. Não tem gerente de conta, não tem reunião de alinhamento, não tem deck de proposta. Tem dois profissionais que constroem sites todo dia e entregam no prazo porque o processo é afinado.</p>
         </div>
-        <div class="feature-card feature-teal">
-          <span class="badge-pill feature-tag">📱 Mobile-first</span>
-          <h3 class="display-sm">Design que converte</h3>
-          <p>Layout limpo, mobile-first, pensado para transformar visita em contato.</p>
-        </div>
-        <div class="feature-card feature-lavender">
-          <span class="badge-pill feature-tag">🔗 WhatsApp</span>
-          <h3 class="display-sm">WhatsApp integrado</h3>
-          <p>Botão flutuante e link direto. Seu cliente fala com você em 1 toque.</p>
-        </div>
-        <div class="feature-card feature-peach">
-          <span class="badge-pill feature-tag">🔍 Busca local</span>
-          <h3 class="display-sm">Google-ready</h3>
-          <p>Google Meu Negócio configurado. Você aparece nas buscas da sua cidade.</p>
-        </div>
-        <div class="feature-card feature-ochre">
-          <span class="badge-pill feature-tag">⚡ 48h</span>
-          <h3 class="display-sm">Entrega em 48h</h3>
-          <p>Não é promessa. É o nosso processo. Testado e cronometrado.</p>
-        </div>
-        <div class="feature-card feature-cream">
-          <span class="badge-pill feature-tag">💬 Gente de verdade</span>
-          <h3 class="display-sm">Suporte humano</h3>
-          <p>Dúvida? WhatsApp direto com quem fez o site. Sem ticket, sem bot.</p>
+        <div class="about-stats reveal" style="--rd:2">
+          <div class="stat-row">
+            <span class="stat-value"><span data-count="48">48</span>h</span>
+            <span class="stat-label">do briefing ao ar</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-value"><span data-count="5">5</span> min</span>
+            <span class="stat-label">de briefing no WhatsApp</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-value"><span data-count="1">1</span> msg</span>
+            <span class="stat-label">para aprovar a proposta</span>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-
-
-  <!-- ============ 7. Quem somos ============ -->
-  <section class="section" id="quem-somos">
-    <div class="container about-grid">
-      <div class="about-copy">
-        <h2 class="display-md">Dois devs. Uma promessa de 48 horas.</h2>
-        <p class="about-body">A gente não é agência grande. Não tem gerente de conta, não tem reunião de alinhamento, não tem deck de proposta. Tem dois profissionais que constroem sites todo dia e entregam no prazo porque o processo é afinado.</p>
+    <!-- ============ 9. CTA ============ -->
+    <section class="cta-section" id="contato" data-build-hour="48" data-build-msg="site no ar!" data-build-emoji="">
+      <div class="cta-band" id="cta-band">
+        <div class="cta-glow" aria-hidden="true"></div>
+        <div class="terminal" aria-hidden="true">
+          <div class="terminal-bar"><span class="b-dot"></span><span class="b-dot"></span><span class="b-dot"></span><span class="terminal-title">onlineja — deploy</span></div>
+          <div class="terminal-body" id="terminal-body">
+            <p class="tl" data-text="$ onlineja deploy --cliente=voce"></p>
+            <p class="tl" data-text="✓ dominio registrado"></p>
+            <p class="tl" data-text="✓ ssl ativo · whatsapp conectado"></p>
+            <p class="tl tl-ok" data-text="🚀 publicado em 47h32min"></p>
+          </div>
+        </div>
+        <h2 class="display-md cta-title cta-rise" style="--cr:0">Pronto para existir online?</h2>
+        <p class="cta-sub cta-rise" style="--cr:1">A gente começa hoje. O site vai ao ar em 48 horas.</p>
+        <div class="cta-actions cta-rise" style="--cr:2">
+          <a href="https://wa.me/5511999999999" target="_blank" rel="noopener" class="btn btn-primary btn-lg">Falar agora no WhatsApp</a>
+          <a href="#modelos" class="btn btn-secondary btn-lg">Rever os modelos</a>
+        </div>
+        <p class="cta-note cta-rise" style="--cr:3">Sem compromisso. Resposta em minutos.</p>
       </div>
+    </section>
 
-    </div>
-  </section>
+  </main>
 
-  <!-- ============ 8. CTA Band ============ -->
-  <section class="cta-section" id="contato">
-    <div class="cta-band">
-      <h2 class="display-md">Pronto para existir online?</h2>
-      <p class="cta-sub">A gente começa hoje. O site vai ao ar em 48 horas.</p>
-      <a href="https://wa.me/5511999999999" target="_blank" rel="noopener" class="btn btn-primary">Falar agora no WhatsApp →</a>
-      <p class="cta-note">Sem compromisso. Resposta em minutos.</p>
-    </div>
-  </section>
-
-  <!-- ============ 9. Footer ============ -->
+  <!-- ============ 10. Footer ============ -->
   <footer class="footer">
     <div class="container footer-grid">
       <div class="footer-brand">
-        <p class="nav-logo">OnlineJá</p>
+        <p class="nav-logo">Online<span class="nav-logo-accent">Já</span></p>
         <p class="footer-tagline">Sua empresa online em 48 horas. Sem burocracia, sem enrolação.</p>
+        <p class="footer-status"><span class="dot-online"></span> Todos os sistemas no ar</p>
       </div>
       <div class="footer-col">
-        <p class="footer-heading">Links</p>
+        <p class="footer-heading">Produto</p>
         <a href="#como-funciona">Como funciona</a>
+        <a href="#incluso">O que está incluso</a>
         <a href="#cases">Cases</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-heading">Modelos</p>
+        <a href="templates/clinica/index.html" target="_blank" rel="noopener">Clínicas de saúde</a>
+        <a href="templates/imobiliaria/index.html" target="_blank" rel="noopener">Imobiliárias</a>
       </div>
       <div class="footer-col">
         <p class="footer-heading">Contato</p>
@@ -211,9 +435,16 @@
       </div>
     </div>
     <div class="container footer-bottom">
-      <p>© 2025 OnlineJá. Feito com velocidade.</p>
+      <p>© 2026 OnlineJá. Feito com velocidade.</p>
     </div>
   </footer>
+
+  <!-- Botão flutuante de WhatsApp -->
+  <a href="https://wa.me/5511999999999" target="_blank" rel="noopener" class="whats-fab" id="whats-fab" aria-label="Falar no WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
 
   <script src="script.js"></script>
 </body>
