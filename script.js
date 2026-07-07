@@ -1,4 +1,4 @@
-// OnlineJá — motor de interações, sem dependências.
+// 2Sight — motor de interações, sem dependências.
 // Conceito: "a página é a entrega" — o scroll percorre as 48h de construção.
 
 (() => {

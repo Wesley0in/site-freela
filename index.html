@@ -3,9 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OnlineJá — Sua empresa online em 48 horas</title>
+  <title>2Sight — Sua empresa online em 48 horas</title>
   <meta name="description" content="Sua empresa online em 48 horas. Sem burocracia, sem enrolação. Site no ar com domínio, hospedagem e WhatsApp integrado.">
   <meta name="theme-color" content="#010102">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -34,7 +38,10 @@
   <!-- ============ 1. Navegação ============ -->
   <header class="nav" id="site-nav">
     <div class="nav-inner container">
-      <a href="#topo" class="nav-logo">Online<span class="nav-logo-accent">Já</span></a>
+      <a href="#topo" class="nav-logo" aria-label="2Sight — início">
+        <img src="logo_2sight.png" alt="" class="nav-logo-mark" width="32" height="32">
+        <span>2Sight</span>
+      </a>
       <nav class="nav-links" id="nav-links" aria-label="Navegação principal">
         <a href="#como-funciona" class="nav-link">Como funciona</a>
         <a href="#modelos" class="nav-link">Modelos</a>
@@ -385,9 +392,9 @@
       <div class="cta-band" id="cta-band">
         <div class="cta-glow" aria-hidden="true"></div>
         <div class="terminal" aria-hidden="true">
-          <div class="terminal-bar"><span class="b-dot"></span><span class="b-dot"></span><span class="b-dot"></span><span class="terminal-title">onlineja — deploy</span></div>
+          <div class="terminal-bar"><span class="b-dot"></span><span class="b-dot"></span><span class="b-dot"></span><span class="terminal-title">2sight — deploy</span></div>
           <div class="terminal-body" id="terminal-body">
-            <p class="tl" data-text="$ onlineja deploy --cliente=voce"></p>
+            <p class="tl" data-text="$ 2sight deploy --cliente=voce"></p>
             <p class="tl" data-text="✓ dominio registrado"></p>
             <p class="tl" data-text="✓ ssl ativo · whatsapp conectado"></p>
             <p class="tl tl-ok" data-text="🚀 publicado em 47h32min"></p>
@@ -409,7 +416,10 @@
   <footer class="footer">
     <div class="container footer-grid">
       <div class="footer-brand">
-        <p class="nav-logo">Online<span class="nav-logo-accent">Já</span></p>
+        <p class="nav-logo footer-logo">
+          <img src="logo_2sight.png" alt="" class="nav-logo-mark nav-logo-mark-lg" width="40" height="40">
+          <span>2Sight</span>
+        </p>
         <p class="footer-tagline">Sua empresa online em 48 horas. Sem burocracia, sem enrolação.</p>
         <p class="footer-status"><span class="dot-online"></span> Todos os sistemas no ar</p>
       </div>
@@ -435,7 +445,7 @@
       </div>
     </div>
     <div class="container footer-bottom">
-      <p>© 2026 OnlineJá. Feito com velocidade.</p>
+      <p>© 2026 2Sight. Feito com velocidade.</p>
     </div>
   </footer>
 
